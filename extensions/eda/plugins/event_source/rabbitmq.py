@@ -10,6 +10,7 @@ Arguments:
     user:        The username to use
     password:    The password to use
     exchange:    The exchange to use (optional)
+    vhost:       The vhost to use (optional)
     routing_key: The routing key to use (optional)
 
 """
@@ -31,9 +32,10 @@ async def main(queue: asyncio.Queue, args: dict[str, Any]) -> None:
     password = args.get("password")
     queue_name = args.get("queue")
     exchange = args.get("exchange")
+    vhost = args.get("vhost")
     routing_key = args.get("routing_key")
 
-    url = f"amqp://{user}:{password}@{host}:{port}"
+    url = f"amqp://{user}:{password}@{host}:{port}/{vhost}"
 
     async with aiorabbit.connect(url) as client:
         await client.queue_declare(queue_name)
